@@ -2,13 +2,12 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plot
 
+
 def mouse_click(event, x, y, flag, param):
-    global frame
     if event == cv2.EVENT_LBUTTONDOWN:
         print(x, y)
         points.append([x, y])
-        cv2.imshow("frame", frame)
-    return points
+
 
 def histogram(roi, target):
 
@@ -28,46 +27,69 @@ def histogram(roi, target):
     ret, thresh = cv2.threshold(dst, 50, 255, 0)
     thresh = cv2.merge((thresh, thresh, thresh))
     res = cv2.bitwise_and(target, thresh)
-    plot.show()
+    # plot.show()
     return res
-
-
 
 
 if __name__ == '__main__':
 
-    frame = cv2.imread("data_set/frame-0.png")
-    points = []
-    cv2.namedWindow("frame", 1)
-    cv2.setMouseCallback("frame", mouse_click)
-    cv2.imshow('frame', frame)
-    cv2.waitKey(0)
+    video = cv2.VideoCapture('detectbuoy.avi')
+    ctr = 0
 
-    points = np.array(points)
-    rect = cv2.boundingRect(points)
-    x, y, w, h = rect
-    croped = frame[y:y + h, x:x + w].copy()
-    ## (2) make mask
-    pts = points - points.min(axis=0)
+    while video:
+        _, frame = video.read()
 
-    mask = np.zeros(croped.shape[:2], np.uint8)
-    cv2.drawContours(mask, [pts], -1, (255, 255, 255), -1, cv2.LINE_AA)
+        # resize image to easily crop the ROI
+        frame = cv2.resize(frame, (1280, 960), interpolation = cv2.INTER_AREA)
 
-    ## (3) do bit-op
-    dst = cv2.bitwise_and(croped, croped, mask=mask)
+        points = []
+        cv2.namedWindow("frame", 1)
+        cv2.setMouseCallback("frame", mouse_click)
+        cv2.imshow('frame', frame)
+        cv2.waitKey(0)
+        # if 0xFF == ord('q'):
+        #     break
 
-    ## (4) add the white background
-    bg = np.ones_like(croped, np.uint8) * 255
-    cv2.bitwise_not(bg, bg, mask=mask)
-    dst2 = bg + dst
-    result = histogram(dst2, frame)
+        # Display the selected points as a polygon
+        points = np.array(points, np.int32)
+        points = points.reshape((-1, 1, 2))
+        # frame = cv2.polylines(frame, [points], True, (0, 255, 255))
 
+        # crop image for dataset
+        rect = cv2.boundingRect(points)
+        x, y, w, h = rect
+        crop = frame[y:y + h, x:x + w].copy()
+        cv2.imwrite('Yellow_data/Crop/frame-'+str(ctr)+'.png', crop)
+        frame = cv2.polylines(frame, [points], True, (0, 255, 255))
+        cv2.imshow('cropped_image', crop)
+        cv2.imshow('frame', frame)
+        # cv2.waitKey(0)
 
-    cv2.imshow("image", dst2)
-    cv2.imshow("result",result)
+        # masking the background
+        pts = points - points.min(axis=0)
+        mask = np.zeros(crop.shape[:2], np.uint8)
+        cv2.drawContours(mask, [pts], -1, (255, 255, 255), -1, cv2.LINE_AA)
+        dst = cv2.bitwise_and(crop, crop, mask=mask)
+        cv2.imwrite('Yellow_data/Crop_Segmented/frame-'+str(ctr)+'.png', dst)
+        cv2.imshow('dst', dst)
+        # cv2.waitKey(0)
 
+        # (4) add the white background
+        bg = np.ones_like(crop, np.uint8) * 255
+        cv2.bitwise_not(bg, bg, mask=mask)
+        dst2 = bg + dst
+        result = histogram(dst2, frame)
+        # cv2.imshow("image", dst2)
+        cv2.imwrite('Yellow_data/Segmented/frame-'+str(ctr)+'.png', result)
+        # cv2.imshow("result", result)
+        cv2.waitKey(0)
+        # cv2.imshow('frame', frame)
 
-    cv2.imwrite("cropped_imagesR/frame-1.png", dst2)
-    cv2.imwrite("segmentedR/frame-1.png", result)
+        ctr += 1
+        # cv2.imwrite("segmentedR/frame-1.png", result)
 
-    cv2.waitKey()
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     break
+
+video.release()
+cv2.destroyAllWindows()
