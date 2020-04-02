@@ -40,7 +40,7 @@ if __name__ == '__main__':
         _, frame = video.read()
 
         # resize image to easily crop the ROI
-        frame = cv2.resize(frame, (1280, 960), interpolation = cv2.INTER_AREA)
+        frame = cv2.resize(frame, (1280, 960), interpolation=cv2.INTER_AREA)
 
         points = []
         cv2.namedWindow("frame", 1)
