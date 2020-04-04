@@ -105,7 +105,7 @@ if __name__ == '__main__':
         # cv2.imshow('frame', frame)
         ctr += 1
 
-        read= cv2.imread('C:/Users/acer/Desktop/Python/ENPM673-Project 3/Green/Crop_segmented/frame-0.png')
+        read= cv2.imread('C:/Users/acer/Desktop/Python/ENPM673-Project 3/Crop_segmented/frame-0.png')
         smooth = cv2.GaussianBlur(read,(5,5),0)
         plt_histogram(smooth,"Unmasked")
         plt_histogram(dst,"Masked", mask=mask)
