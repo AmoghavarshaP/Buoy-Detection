@@ -7,11 +7,11 @@ def AverageHistogram(N,type,channel):
     total=0
     for i in range(N+1):
         if type==1:
-            image=cv2.imread('Green/Crop_segmented/frame-%d.png' %i)
+            image=cv2.imread('Green_DataSet/Crop_segmented/frame-%d.png' %i)
         if type==2:
-            image=cv2.imread('Red/Crop_segmented/frame-%d.png' %i)
+            image=cv2.imread('Red_DataSet/Crop_segmented/frame-%d.png' %i)
         if type==3:
-            image=cv2.imread('Yellow/Crop_segmented/frame-%d.png' %i)
+            image=cv2.imread('Yellow_DataSet/Crop_segmented/frame-%d.png' %i)
         histogram = cv2.calcHist([image],[channel],None,[256],[50,256])
         total=total+histogram
     average_histogram=total/(N+1)
