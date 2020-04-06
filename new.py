@@ -7,11 +7,11 @@ def AverageHistogram(N,type,channel):
     total=0
     for i in range(N+1):
         if type==1:
-            image=cv2.imread('Green_DataSet/Crop_segmented/frame-%d.png' %i)
+            image=cv2.imread('Green/Crop_segmented/frame-%d.png' %i)
         if type==2:
-            image=cv2.imread('Red_DataSet/Crop_segmented/frame-%d.png' %i)
+            image=cv2.imread('Red/Crop_segmented/frame-%d.png' %i)
         if type==3:
-            image=cv2.imread('Yellow_DataSet/Crop_segmented/frame-%d.png' %i)
+            image=cv2.imread('Yellow/Crop_segmented/frame-%d.png' %i)
         histogram = cv2.calcHist([image],[channel],None,[256],[50,256])
         total=total+histogram
     average_histogram=total/(N+1)
@@ -83,7 +83,7 @@ Y_channel=3
 hist_GB=AverageHistogram(20,G_channel,B_channel)
 hist_GG=AverageHistogram(20,G_channel,G_channel)
 hist_GR=AverageHistogram(20,G_channel,R_channel)
-plt.title("Gaussian Histogram - Green Buoy")
+plt.title(" Histogram - Green Buoy")
 plt.show()
 
 Green_GMM=MeanVariance(hist_GG,G_channel)
@@ -92,7 +92,7 @@ plt.show()
 hist_RB=AverageHistogram(30,R_channel,B_channel)
 hist_RG=AverageHistogram(30,R_channel,G_channel)
 hist_RR=AverageHistogram(30,R_channel,R_channel)
-plt.title("Gaussian Histogram - Red Buoy")
+plt.title("Histogram - Red Buoy")
 plt.show()
 Red_GMM=MeanVariance(hist_RR,R_channel)
 plt.show()
@@ -100,7 +100,7 @@ plt.show()
 hist_YB=AverageHistogram(30,Y_channel,B_channel)
 hist_YG=AverageHistogram(30,Y_channel,G_channel)
 hist_YR=AverageHistogram(30,Y_channel,R_channel)
-plt.title("Gaussian Histogram - Yellow Buoy")
+plt.title(" Histogram - Yellow Buoy")
 hist_YY=(hist_YG+hist_YR)/2
 plt.show()
 Red_GMM=MeanVariance(hist_YY,Y_channel)
