@@ -9,4 +9,30 @@ learned model to segment them. The output of the project shows a tight segmentat
 the entire video sequence by applying a tight contour (in the respective color of the buoy being segmented)
 around each buoy.
 
-<img src = >
+## Authors
+- Pruthvi Sanghavi
+- Naman Gupta
+- Amoghavarsha Prassana
+
+## Dependencies
+- Numpy ```pip install numpy```
+- OpenCV ```pip install opencv-python```
+- Matplotlib ```pip install matplotlib```
+
+## Run Instructions
+Open the terminal and type the following commands
+```
+cd <workspace>
+git clone https://github.com/AmoghavarshaP/Buoy-Detection.git
+cd Buoy-Detection
+```
+- For training (for red buoy)
+```
+python3 segRed_multi.py
+```
+- For detection
+```
+python3 detection3D.py
+```
+## Results
+- Link to Results : [Results Drive Link](https://drive.google.com/drive/u/0/folders/17eO_HZwCzxNqrd-DXKExQSckOnobPJWr)
