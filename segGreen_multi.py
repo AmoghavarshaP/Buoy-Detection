@@ -1,10 +1,7 @@
 import matplotlib.pyplot as plot
 import numpy as np
-import scipy.stats as stats
-import random
 import cv2
 import math
-import glob
 
 
 # function to calculate gaussian
@@ -27,10 +24,10 @@ def createData(N):
     pixel_r = []
 
     for x in range(N):
-        image = cv2.imread("Red_DataSet/Crop_segmented/Train/frame%d.png" % x)
+        image = cv2.imread("Green_DataSet/Crop_segmented/Train/frame%d.png" % x)
         for i in range(image.shape[0]):
             for j in range(image.shape[1]):
-                if image[i, j, 2] > 50:
+                if image[i, j, 1] > 50:
                     pixel_b = np.append([pixel_b], [image[i, j, 0]])
                     pixel_g = np.append([pixel_g], [image[i, j, 1]])
                     pixel_r = np.append([pixel_r], [image[i, j, 2]])
@@ -110,7 +107,7 @@ def maximize():
 if __name__ == '__main__':
 
     # Create pixel data from train images
-    pixels = createData(118)
+    pixels = createData(28)
 
     # assume mean, co-variance, weight parameters
     mean = np.array([[50, 240, 200], [50, 240, 150]])
