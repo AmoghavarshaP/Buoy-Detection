@@ -24,11 +24,11 @@ Open the terminal and type the following commands
 ```
 cd <workspace>
 git clone https://github.com/AmoghavarshaP/Buoy-Detection.git
-cd Buoy-Detection
+cd Buoy-Detection/Code
 ```
-- For training (for red buoy)
+- For training (for green buoy)
 ```
-python3 segRed_multi.py
+python3 segGreen_multi.py
 ```
 - For detection
 ```
