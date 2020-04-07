@@ -10,12 +10,12 @@ import glob
 # function to calculate gaussian
 def calcGaussian(pixel, mean, variance):
     # matrix conversion
-    mean = np.array(mean)
-    pixel = np.array(pixel)
-    variance = np.array(variance)
+    # mean = np.array(mean)
+    # pixel = np.array(pixel)
+    # variance = np.array(variance)
 
     # calculate gaussian
-    N = (1 / ((2 * np.pi * np.linalg.det(variance)) ** (3 / 2))) * np.exp((-1 / 2) * np.matmul(np.matmul((pixel - mean), (np.linalg.inv(variance))), (pixel - mean).T))
+    N = (1 / ((2 * np.pi * np.linalg.det(variance)) ** (3 / 2))) * np.exp((-1 / 2) * np.matmul(np.matmul((pixel - mean), np.linalg.inv(variance)), (pixel - mean).T))
 
     return N
 
@@ -30,7 +30,7 @@ def createData(N):
         image = cv2.imread("Red_DataSet/Crop_segmented/Train/frame%d.png" % x)
         for i in range(image.shape[0]):
             for j in range(image.shape[1]):
-                if image[i, j, 0] or image[i, j, 1] or image[i, j, 2] > 50:
+                if image[i, j, 2] > 50:
                     pixel_b = np.append([pixel_b], [image[i, j, 0]])
                     pixel_g = np.append([pixel_g], [image[i, j, 1]])
                     pixel_r = np.append([pixel_r], [image[i, j, 2]])
